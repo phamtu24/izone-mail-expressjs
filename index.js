@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 const Message = require('./models/message');
-
+const port = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 const app = express();
 app.use(bodyParser.json());
@@ -12,4 +12,4 @@ app.get('/', async (req, res) => {
     let query = await Message.find();
     res.json(query);
 })
-app.listen(3000);
+app.listen(port);

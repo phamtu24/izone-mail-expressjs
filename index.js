@@ -30,6 +30,9 @@ app.get('/', async (req, res) => {
 app.get('/:id', MemberController);
 app.get('/member', async (req, res) => {
     let query = await Member.find();
+    query.sort((a, b) => {
+        return (new Date(b.date)) - (new Date(a.date))
+    })
     res.json(query);
 })
 app.post('/add', AddController);

@@ -21,18 +21,18 @@ app.use('/photos', photoRoute);
 app.use('/mail', mailRoute);
 app.get('/', async (req, res) => {
     let messages = await Message.find();
+    messages.sort((a, b) => {
+        return (new Date(b.date)) - (new Date(a.date))
+    })
     let members = await Member.find();
     res.json({
         messages: messages,
         members: members
     });
 })
-app.get('/:id', MemberController);
+app.get('/m/:id', MemberController);
 app.get('/member', async (req, res) => {
     let query = await Member.find();
-    query.sort((a, b) => {
-        return (new Date(b.date)) - (new Date(a.date))
-    })
     res.json(query);
 })
 app.post('/add', AddController);

@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
         title : req.body.title ? req.body.title : 'no title',
         mail : req.body.mail ? req.body.mail : '       ',
         date : req.body.date ? dateToString(req.body.date) : "00:00 2018/10/29",
-        transMail : req.body.transMessage ? req.body.transMessage :  "Coming soon ..."
+        transMail : req.body.transMail ? req.body.transMail :  "Coming soon ..."
     })
     res.json(message);
 }

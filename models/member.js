@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var memberSchema = {
+const memberSchema = {
     _id: String,
     avatar: String,
     name: String
 }
-var Member = mongoose.model('Member', memberSchema, 'members');
+const Member = mongoose.model('Member', memberSchema, 'members');
 module.exports = Member;

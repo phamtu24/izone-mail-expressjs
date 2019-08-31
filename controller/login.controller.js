@@ -8,7 +8,7 @@ const login = async (req, res) => {
             password: req.body.password
         });
         if (!user) {
-            return res.status(404).send('No user found');
+            return res.status(404).send('Wrong username or password !');
         }
         const token = jwt.sign({ 
             userId: user.id },

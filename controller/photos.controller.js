@@ -33,6 +33,9 @@ const photosInDate = (messages, date) => {
 
 module.exports.getAll = async (req, res) => {
     const messages = await Message.find({});
+    messages.sort((a, b) => {
+        return (new Date(b.date)) - (new Date(a.date))
+    })
     let dates = getDates(messages);
     let obj = [];
     dates.forEach((date) => {

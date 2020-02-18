@@ -15,9 +15,10 @@ const login = async (req, res) => {
             process.env.SECRET_KEY
         );
         res.status(200).json({
-            userId: user.id,
-            token: token
-        })
+            userId: user._id,
+            token: token,
+            role: user.role
+        });
     } catch(err) {
         res.status(400).send('invalid username or password');
     }

@@ -51,6 +51,9 @@ module.exports.getAll = async (req, res) => {
 module.exports.filter = async (req, res) => {
     const member = await Member.find({name: req.params.id})
     const messages = await Message.find({memberID: member[0]._id});
+    messages.sort((a, b) => {
+        return (new Date(b.date)) - (new Date(a.date))
+    })
     let dates = getDates(messages);
     let obj = [];
     dates.forEach((date) => {

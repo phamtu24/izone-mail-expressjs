@@ -8,12 +8,12 @@ const mailRoute = require('./route/mail.route');
 const loginRoute = require('./route/login.route');
 const MemberController = require('./controller/member.controller')
 const AddController = require('./controller/add.controller');
+const {papagoTranslate, googleTranslate} = require('./controller/translate.constroller');
 const Message = require('./models/message');
 const Member = require('./models/member');
 const User = require('./models/user');
 const { checkToken } = require('./middlewares/token.middleware');
-const axios = require('axios');
-const querystring = require('querystring');
+
 
 const port = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
@@ -61,38 +61,7 @@ app.get('/changeName', checkToken, async (req, res) => {
 
 })
 
-app.post('/papagoApi',checkToken, (req, res) => {
-    const requestBody = {
-        source: req.body.sourceLang === 'ko' ? 'ko' : 'ja',
-        target: req.body.sourceLang === 'ko' ? 'vi' : 'en',
-        text: req.body.sourceText
-    };
-
-    const config = {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Naver-Client-Id': 'kP_gjVo2xaKlgL23Uetb',
-            'X-Naver-Client-Secret': 'Gl5ltWKYKR'
-        }
-    };
-
-    const papago = 'https://openapi.naver.com/v1/papago/n2mt';
-
-    axios({
-        method: "POST",
-        url: papago,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Naver-Client-Id': 'kP_gjVo2xaKlgL23Uetb',
-            'X-Naver-Client-Secret': 'Gl5ltWKYKR'
-        },
-        data: querystring.stringify(requestBody)
-    }).then(result => {
-        let a = result.data.message.result.translatedText
-        res.send(a)
-    }).catch(err => {
-        res.send(err)
-    })
-})
+app.post('/papagoApi',checkToken, papagoTranslate);
+app.post('/googleApi',checkToken, googleTranslate);
 
 app.listen(port);

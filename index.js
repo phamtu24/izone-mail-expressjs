@@ -61,7 +61,7 @@ app.get('/changeName', checkToken, async (req, res) => {
 
 })
 
-app.post('/papagoApi',checkToken, (req, res) => {
+app.post('/papagoApi', checkToken, (req, res) => {
     const requestBody = {
         source: req.body.sourceLang === 'ko' ? 'ko' : 'ja',
         target: req.body.sourceLang === 'ko' ? 'vi' : 'en',
@@ -93,6 +93,17 @@ app.post('/papagoApi',checkToken, (req, res) => {
     }).catch(err => {
         res.send(err)
     })
+})
+
+
+app.post('/delete', checkToken, async (req, res) => {
+    try {
+        let mes = await Message.findOne({ _id: req.body.id })
+        await Message.deleteOne(mes);
+        res.send('delele successfully !')
+    } catch (err) {
+        res.send("can not delete")
+    }
 })
 
 app.listen(port);

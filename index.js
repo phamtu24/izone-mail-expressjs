@@ -17,15 +17,17 @@ const { checkToken } = require('./middlewares/token.middleware');
 
 const port = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
+const router = express.Router();
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/api/v1', router);
 
-app.use('/photos', checkToken, photoRoute);
-app.use('/mail', checkToken, mailRoute);
-app.use('/login', loginRoute);
-app.get('/', checkToken, async (req, res) => {
+router.use('/photos', checkToken, photoRoute);
+router.use('/mail', checkToken, mailRoute);
+router.use('/login', loginRoute);
+router.get('/', checkToken, async (req, res) => {
     let messages = await Message.find();
     messages.sort((a, b) => {
         return (new Date(b.date)) - (new Date(a.date))
@@ -36,16 +38,16 @@ app.get('/', checkToken, async (req, res) => {
         members: members
     });
 })
-app.get('/m/:id', checkToken, MemberController);
-app.get('/member', checkToken, async (req, res) => {
+router.get('/m/:id', checkToken, MemberController);
+router.get('/member', checkToken, async (req, res) => {
     let query = await Member.find();
     res.json(query);
 })
-app.post('/add', checkToken, AddController);
-app.get('/checkAuth', checkToken, (req, res) => {
+router.post('/add', checkToken, AddController);
+router.get('/checkAuth', checkToken, (req, res) => {
     res.send('pass')
 })
-app.get('/changeName', checkToken, async (req, res) => {
+router.get('/changeName', checkToken, async (req, res) => {
     try {
         let mes = await Message
             .find({ mail: /Giang/ })
@@ -61,11 +63,11 @@ app.get('/changeName', checkToken, async (req, res) => {
 
 })
 
-app.post('/papagoApi',checkToken, papagoTranslate);
-app.post('/googleApi',checkToken, googleTranslate);
+router.post('/papagoApi',checkToken, papagoTranslate);
+router.post('/googleApi',checkToken, googleTranslate);
 
 
-app.post('/delete', checkToken, async (req, res) => {
+router.post('/delete', checkToken, async (req, res) => {
     try {
         let mes = await Message.findOne({ _id: req.body.id })
         await Message.deleteOne(mes);

@@ -8,11 +8,13 @@ const mailRoute = require('./route/mail.route');
 const loginRoute = require('./route/login.route');
 const MemberController = require('./controller/member.controller')
 const AddController = require('./controller/add.controller');
+const crawlerController = require('./controller/crawler.controller')
 const {papagoTranslate, googleTranslate} = require('./controller/translate.constroller');
 const Message = require('./models/message');
 const Member = require('./models/member');
 const User = require('./models/user');
 const { checkToken } = require('./middlewares/token.middleware');
+const { route } = require('./route/photo.route');
 
 
 const port = process.env.PORT || 5000;
@@ -76,5 +78,7 @@ router.post('/delete', checkToken, async (req, res) => {
         res.send("can not delete")
     }
 })
+
+router.get('/crawl', crawlerController)
 
 app.listen(port);

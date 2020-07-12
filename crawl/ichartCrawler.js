@@ -24,7 +24,7 @@ const ichartRank = async() => {
         }
         let result = ''
         for (let i = 0; i <= siteNameList.length-2;i++) {
-            result += `<br>${siteNameList[i]} - ${chartNameList[i]} - ${rankList[i]}`
+            result += `${siteNameList[i]} - ${chartNameList[i]} - ${rankList[i]} \n \n`
         }
         return result;
     });
